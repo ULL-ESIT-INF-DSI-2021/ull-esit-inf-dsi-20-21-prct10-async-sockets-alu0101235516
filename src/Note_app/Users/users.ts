@@ -13,9 +13,9 @@ export class User {
    * @param username nombre de usuario, del usuario correspondiente
    */
   constructor(private username: string) {
-    const existDirectory: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}`);
+    const existDirectory: boolean = fs.existsSync(`src/Note_app/Database/${this.username}`);
     if (existDirectory == false) {
-      fs.mkdir(`src/Practica_10/Note_app/Database/${this.username}`, () => {
+      fs.mkdir(`src/Note_app/Database/${this.username}`, () => {
         console.log(chalk.green('New User Directory created!'));
       });
     }
@@ -52,11 +52,11 @@ export class User {
    * @param color color de la nota.
    */
   public addNote(title: string, body: string, color: 'red' | 'blue' | 'yellow' | 'green'): boolean {
-    const existFile: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+    const existFile: boolean = fs.existsSync(`src/Note_app/Database/${this.username}/${title}.json`);
 
     if (existFile == false) {
       this.userNotes.push(new Note(title, body, color));
-      fs.writeFile(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`, `${jsonFormat(title, body, color)}`, () => {});
+      fs.writeFile(`src/Note_app/Database/${this.username}/${title}.json`, `${jsonFormat(title, body, color)}`, () => {});
       return true;
     }
     return false;
@@ -68,10 +68,10 @@ export class User {
    * @param title titulo de la nota.
    */
   public removeNote(title: string): boolean {
-    const existFile: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+    const existFile: boolean = fs.existsSync(`src/Note_app/Database/${this.username}/${title}.json`);
 
     if (existFile == true) {
-      fs.rm(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`, () => {});
+      fs.rm(`src/Note_app/Database/${this.username}/${title}.json`, () => {});
       return true;
     } else {
       return false;
@@ -86,24 +86,24 @@ export class User {
    * @param valParam El nuevo valor del parámetro
    */
   public modifyNote(title: string, newParam: string, valParam: string): boolean {
-    const existFile: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+    const existFile: boolean = fs.existsSync(`src/Note_app/Database/${this.username}/${title}.json`);
 
     if (existFile == true) {
-      const noteContent = fs.readFileSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+      const noteContent = fs.readFileSync(`src/Note_app/Database/${this.username}/${title}.json`);
       const data = JSON.parse(noteContent.toString());
 
       switch (newParam) {
         case "title":
-          fs.renameSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`, `src/Practica_10/Note_app/Database/${this.username}/${valParam}.json`);
-          fs.writeFile(`src/Practica_10/Note_app/Database/${this.username}/${valParam}.json`, `${jsonFormat(valParam, data.body, data.color)}`, () => {});
+          fs.renameSync(`src/Note_app/Database/${this.username}/${title}.json`, `src/Note_app/Database/${this.username}/${valParam}.json`);
+          fs.writeFile(`src/Note_app/Database/${this.username}/${valParam}.json`, `${jsonFormat(valParam, data.body, data.color)}`, () => {});
           return true;
           break;
         case "body":
-          fs.writeFile(`src/Practica_10/Note_app/Database/${this.username}/${data.title}.json`, `${jsonFormat(data.title, valParam, data.color)}`, () => {});
+          fs.writeFile(`src/Note_app/Database/${this.username}/${data.title}.json`, `${jsonFormat(data.title, valParam, data.color)}`, () => {});
           return true;
           break;
         case "color":
-          fs.writeFile(`src/Practica_10/Note_app/Database/${this.username}/${data.title}.json`, `${jsonFormat(data.title, data.body, valParam)}`, () => {});
+          fs.writeFile(`src/Note_app/Database/${this.username}/${data.title}.json`, `${jsonFormat(data.title, data.body, valParam)}`, () => {});
           return true;
           break;
       }
@@ -119,10 +119,10 @@ export class User {
    * @param title El titulo de la nota que queremos leer
    */
   public readNote(title: string) {
-    const existFile: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+    const existFile: boolean = fs.existsSync(`src/Note_app/Database/${this.username}/${title}.json`);
 
     if (existFile == true) {
-      const noteContent = fs.readFileSync(`src/Practica_10/Note_app/Database/${this.username}/${title}.json`);
+      const noteContent = fs.readFileSync(`src/Note_app/Database/${this.username}/${title}.json`);
       const data = JSON.parse(noteContent.toString());
 
       /*
@@ -161,7 +161,7 @@ export class User {
    * Método para listar todas las notas de un usuario
    */
   public listNotes() {
-    const existFile: boolean = fs.existsSync(`src/Practica_10/Note_app/Database/${this.username}`);
+    const existFile: boolean = fs.existsSync(`src/Note_app/Database/${this.username}`);
     const userNote: Note[] = [];
 
     if (existFile == true) {
@@ -169,8 +169,8 @@ export class User {
       console.log(chalk.blue(`¡Notas de ${this.username}!`));
       console.log('------------------');
       */
-      fs.readdirSync(`src/Practica_10/Note_app/Database/${this.username}`).forEach((item) => {
-        const userContent = fs.readFileSync(`src/Practica_10/Note_app/Database/${this.username}/${item}`);
+      fs.readdirSync(`src/Note_app/Database/${this.username}`).forEach((item) => {
+        const userContent = fs.readFileSync(`src/Note_app/Database/${this.username}/${item}`);
         const data = JSON.parse(userContent.toString());
 
         /*
