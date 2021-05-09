@@ -91,6 +91,78 @@ Con esta clase podremos recibir y enviar eventos, en concreto resolveremos el pr
   - [Fichero eventEmitterServer.ts](https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct10-async-sockets-alu0101235516/blob/master/src/Server/eventEmitterServer.ts)
 
 
+##### _**Tests y prueba del código**_
+
+**TEST DEL EVENTEMITTERSERVER**
+```typescript
+import 'mocha';
+import {expect} from 'chai';
+import {EventEmitter} from 'events';
+import {EventEmitterServer} from '../src/Server/eventEmitterServer';
+
+describe('EventEmitterServer', () => {
+  it('Request emitted', (done) => {
+    const emit = new EventEmitter();
+    const server = new EventEmitterServer(emit);
+
+    server.on('request', (message) => {
+      expect(message).to.be.eql({"title": "Test", "body": "Test", "color": "blue"});
+      done();
+    });
+
+    emit.emit('data', '{"title": "Test", "body": "Test"');
+    emit.emit('data', ', "color": "blue"}');
+    emit.emit('data', '\n');
+  });
+});
+``` 
+**TEST DE LA CLASE NOTE**
+```typescript
+import 'mocha';
+import {expect} from 'chai';
+import {Note} from '../src/Note_app/Notes/note';
+
+const note = new Note('Test', 'Test', 'blue');
+const newNote = new Note('Test', 'Test', 'blue');
+
+describe('Note function test', () => {
+  it('Existing object', () => {
+    expect(note).not.to.be.equal(null);
+  });
+
+  it('notes.getTitle() returns the note\'s title', () => {
+    expect(note.getTitle()).to.be.equal('Test');
+  });
+
+  it('notes.getBody() returns the note\'s body', () => {
+    expect(note.getBody()).to.be.equal('Test');
+  });
+
+  it('notes.getColor() returns the note\'s color', () => {
+    expect(note.getColor()).to.be.equal('blue');
+  });
+
+
+  it('notes.setTitle() returns the new note\'s title', () => {
+    expect(newNote.setTitle('NewTest'));
+    expect(newNote.getTitle()).to.be.equal('NewTest');
+  });
+
+  it('notes.setBody() returns the new note\'s body', () => {
+    expect(newNote.setBody('NewTest'));
+    expect(newNote.getBody()).to.be.equal('NewTest');
+  });
+
+  it('notes.setColor() returns the new note\'s color', () => {
+    expect(newNote.setColor('yellow'));
+    expect(newNote.getColor()).to.be.equal('yellow');
+  });
+});
+``` 
+
+**PRUEBA DE LA APLICACIÓN (Usado de ejemplo el comando add)**
+  - [!TEST ADD](https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct10-async-sockets-alu0101235516/blob/gh-pages/images/add.PNG)
+
 ### _**Bibliografía.**_
 
 Nombre | Enlaces
